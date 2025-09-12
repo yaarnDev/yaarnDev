@@ -1,30 +1,40 @@
-name: Build and Deploy
+# GitHub Action untuk generate animasi ular kontribusi
+name: Generate Snake Animation
 
 on:
-  push:
-    branches:
-      - main # atau branch sumber Anda
+  # Jalankan otomatis setiap 12 jam
+  schedule:
+    - cron: "0 */12 * * *"
+  
+  # Memungkinkan untuk menjalankan action ini secara manual dari tab Actions
+  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    
-    # TAMBAHKAN BLOK INI
+
+    # Menambahkan izin untuk menulis ke repositori (PENTING!)
     permissions:
       contents: write
-      
+
     steps:
-   # ... (setelah langkah Checkout) ...
+      - uses: actions/checkout@v3
 
-      - name: Build static files
-        run: |
-          mkdir output
-          cp index.html output/
-          cp -R css output/
-          cp -R js output/
-          # Salin semua file dan folder lain yang dibutuhkan ke dalam 'output'
-
-      - name: Deploy 🚀
-        uses: crazy-max/ghaction-github-pages@v3.1.0
+      # Generate snake.svg
+      - uses: Platane/snk@v3
         with:
-          build_dir: output # Sekarang folder ini sudah ada
+          # Ganti 'yaarnDev' dengan username GitHub kamu jika berbeda
+          github_user_name: yaarnDev
+          
+          # Daftar output yang akan dibuat
+          outputs: |
+            dist/github-contribution-grid-snake.svg
+            dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+
+      # Push file yang sudah di-generate ke branch 'output'
+      - uses: crazy-max/ghaction-github-pages@v3.1.0
+        with:
+          target_branch: output
+          build_dir: dist
+          # GITHUB_TOKEN dimasukkan di sini, bukan di 'env'
+          token: ${{ secrets.GITHUB_TOKEN }}
