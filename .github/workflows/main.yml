@@ -14,13 +14,17 @@ jobs:
       contents: write
       
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v3
+   # ... (setelah langkah Checkout) ...
 
-      # ... langkah-langkah build Anda ...
+      - name: Build static files
+        run: |
+          mkdir output
+          cp index.html output/
+          cp -R css output/
+          cp -R js output/
+          # Salin semua file dan folder lain yang dibutuhkan ke dalam 'output'
 
       - name: Deploy 🚀
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
-          # Hapus tanda # dari baris di bawah ini untuk mengaktifkannya
-          build_dir: output
+          build_dir: output # Sekarang folder ini sudah ada
