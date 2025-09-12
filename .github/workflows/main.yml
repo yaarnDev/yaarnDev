@@ -22,7 +22,5 @@ jobs:
       - name: Deploy 🚀
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
-          # ... konfigurasi action Anda yang lain ...
-          # Contoh:
-          # target_branch: output
-          # build_dir: output
+          # Hapus tanda # dari baris di bawah ini untuk mengaktifkannya
+          build_dir: output
