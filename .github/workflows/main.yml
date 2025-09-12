@@ -1,46 +1,28 @@
-# Nama GitHub Action
-name: Generate Snake Animation
+name: Build and Deploy
 
-# Pengaturan kapan Action ini akan berjalan
 on:
-  # Opsi 1: Berjalan otomatis setiap 12 jam
-  schedule:
-    - cron: "0 */12 * * *"
-  
-  # Opsi 2: Berjalan setiap kali Anda melakukan 'push' ke branch 'main'
   push:
     branches:
-      - main
-      
-  # Opsi 3: Memungkinkan Anda menjalankannya secara manual dari tab Actions
-  workflow_dispatch:
+      - main # atau branch sumber Anda
 
-# Daftar pekerjaan yang akan dilakukan
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+    
+    # TAMBAHKAN BLOK INI
+    permissions:
+      contents: write
+      
     steps:
-      # Step 1: Checkout repositori Anda agar workflow bisa mengaksesnya
-      - uses: actions/checkout@v2
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
 
-      # Step 2: Menjalankan aksi untuk membuat file snake.svg
-      - name: Generate Snake SVG
-        uses: Platane/snk/svg-only@v3
-        with:
-          # Ganti "yaarnDev" dengan username GitHub Anda jika berbeda
-          github_user_name: yaarnDev
-          
-          # Daftar file output yang akan dibuat
-          outputs: |
-            output/github-contribution-grid-snake.svg
-            output/github-contribution-grid-snake-dark.svg?palette=github-dark
-            
-      # Step 3: Melakukan commit dan push file yang baru dibuat ke repositori
-      - name: Push to repository
+      # ... langkah-langkah build Anda ...
+
+      - name: Deploy 🚀
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
-          # Direktori yang berisi file yang akan di-push
-          target_branch: main
-          build_dir: output
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # ... konfigurasi action Anda yang lain ...
+          # Contoh:
+          # target_branch: output
+          # build_dir: output
